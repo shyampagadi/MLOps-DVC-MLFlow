@@ -1,0 +1,91 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+    - path: params.yaml
+      hash: md5
+      md5: bd07de1e7d20100fbe76eaf720b1c1ed
+      size: 547
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: f4ed096734f10cd2cda5614e90b92ee3
+      size: 493
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: 45658c580f450e598ca328df06159e6d.dir
+      size: 504895
+      nfiles: 1
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 45658c580f450e598ca328df06159e6d.dir
+      size: 504895
+      nfiles: 1
+    - path: params.yaml
+      hash: md5
+      md5: bd07de1e7d20100fbe76eaf720b1c1ed
+      size: 547
+    - path: src/preprocess.py
+      hash: md5
+      md5: 656c952160998a7a3879f9bcdac2b146
+      size: 1996
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 47c298d2af7402f8a35571201597f92e.dir
+      size: 472953
+      nfiles: 2
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 47c298d2af7402f8a35571201597f92e.dir
+      size: 472953
+      nfiles: 2
+    - path: params.yaml
+      hash: md5
+      md5: bd07de1e7d20100fbe76eaf720b1c1ed
+      size: 547
+    - path: src/train.py
+      hash: md5
+      md5: 2a8aebef036a895a25cf9dff88f69dc4
+      size: 2411
+    outs:
+    - path: models
+      hash: md5
+      md5: a02d718d29462793f20b77cdf7e05f2b.dir
+      size: 45168
+      nfiles: 2
+    - path: reports/training_metrics.json
+      hash: md5
+      md5: 28c315898801a82022bbda5e0054d44b
+      size: 38
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 78a955f613582d2078a8a3b4815067bb
+      size: 96179
+    - path: models/model.pkl
+      hash: md5
+      md5: 31240f7965e6ba36441f3348029ef224
+      size: 8863
+    - path: models/tfidf_vectorizer.pkl
+      hash: md5
+      md5: 1aaf77ba2d8eaf5896905b6a28729060
+      size: 36305
+    - path: src/evaluate.py
+      hash: md5
+      md5: 81ee567c8f3139861fdf7e9e3348ed08
+      size: 1836
+    outs:
+    - path: reports/evaluation_metrics.json
+      hash: md5
+      md5: 3cd30d39e5c4b5223377373c58d56fad
+      size: 106
