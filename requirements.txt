@@ -1,0 +1,9 @@
+pandas
+numpy
+scikit-learn
+nltk
+pyyaml
+dvclive
+mlflow
+joblib
+dvc
