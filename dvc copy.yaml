@@ -1,0 +1,39 @@
+# dvc.yaml
+stages:
+  data_ingestion:
+    cmd: python src/data_ingestion.py
+    deps:
+      - src/data_ingestion.py
+      - params.yaml
+    outs:
+      - data/raw
+
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+      - data/raw
+      - src/preprocess.py
+      - params.yaml
+    outs:
+      - data/processed
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - data/processed
+      - src/train.py
+      - params.yaml
+    outs:
+      - models
+    metrics:
+      - reports/training_metrics.json:  # Ensure this path matches
+          cache: false
+          
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - models
+      - src/evaluate.py
+      - params.yaml
+    metrics:
+      - reports/evaluation_metrics.json
