@@ -1,0 +1,22 @@
+data:
+  source_url: "https://raw.githubusercontent.com/vikashishere/Datasets/main/spam.csv"
+  raw_path: "data/raw/spam.csv"
+  processed_path: "data/processed"
+  test_size: 0.2
+  random_state: 42
+
+features:
+  text_column: "text"
+  target_column: "label"
+  max_features: 10
+  ngram_range: [1, 2]
+
+model:
+  type: "LogisticRegression"
+  hyperparameters:  # Change key name from "hyperparams" to "hyperparameters"
+    C: 1.0
+    max_iter: 1000
+    solver: "lbfgs"
+
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1"]
